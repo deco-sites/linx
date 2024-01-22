@@ -13,6 +13,7 @@ import type { SiteNavigationElement } from "apps/commerce/types.ts";
 import Image from "apps/website/components/Image.tsx";
 import NavItem from "./NavItem.tsx";
 import { navbarHeight } from "./constants.ts";
+import Login from "./Buttons/Login.tsx";
 
 function Navbar({ items, searchbar, logo }: {
   items: SiteNavigationElement[];
@@ -67,13 +68,7 @@ function Navbar({ items, searchbar, logo }: {
         <div class="flex-none w-44 flex items-center justify-end gap-2">
           <SearchButton />
           <Searchbar searchbar={searchbar} />
-          <a
-            class="btn btn-circle btn-sm btn-ghost"
-            href="/login"
-            aria-label="Log in"
-          >
-            <Icon id="User" size={24} strokeWidth={0.4} />
-          </a>
+          <Login />
           <a
             class="btn btn-circle btn-sm btn-ghost"
             href="/wishlist"
