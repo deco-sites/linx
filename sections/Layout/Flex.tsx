@@ -1,9 +1,10 @@
+import { flex } from "$store/constants.tsx";
 import { clx } from "$store/sdk/clx.ts";
+import { Section } from "deco/blocks/section.ts";
 import { context } from "deco/mod.ts";
-import { flex, VNode } from "../../constants.tsx";
 
 interface Props {
-  children?: VNode[] | null;
+  children?: Section[] | null;
   layout?: {
     gap?: {
       /** @default 4 */
@@ -33,10 +34,6 @@ interface Props {
 }
 
 function Flex({ layout, children }: Props) {
-  const items = !context.isDeploy && !children?.length
-    ? new Array(4).fill(0).map(() => <ItemPreview />)
-    : children;
-
   return (
     <div
       class={clx(
@@ -51,7 +48,9 @@ function Flex({ layout, children }: Props) {
         flex.wrap.desktop[layout?.wrap?.desktop ?? "wrap"],
       )}
     >
-      {items}
+      {!context.isDeploy && !children?.length
+        ? new Array(4).fill(0).map(() => <ItemPreview />)
+        : children?.map(({ Component, props }) => <Component {...props} />)}
     </div>
   );
 }
