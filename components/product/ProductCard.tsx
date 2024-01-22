@@ -8,6 +8,7 @@ import { useVariantPossibilities } from "$store/sdk/useVariantPossiblities.ts";
 import type { Product } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import Image from "apps/website/components/Image.tsx";
+import SendLinxEventOnClick from "../SendLinxEventOnClick.tsx";
 
 export interface Layout {
   basics?: {
@@ -105,6 +106,10 @@ function ProductCard(
     </a>
   );
 
+  const trackingId = product.isVariantOf?.additionalProperty.find((p) =>
+    p.name === "trackingId"
+  )?.value;
+
   return (
     <div
       id={id}
@@ -118,23 +123,13 @@ function ProductCard(
       `}
       data-deco="view-product"
     >
-      <SendEventOnClick
-        id={id}
-        event={{
-          name: "select_item" as const,
-          params: {
-            item_list_name: itemListName,
-            items: [
-              mapProductToAnalyticsItem({
-                product,
-                price,
-                listPrice,
-                index,
-              }),
-            ],
-          },
-        }}
-      />
+      {trackingId && (
+        <SendLinxEventOnClick
+          componentId={id}
+          source="desktop"
+          trackingId={trackingId}
+        />
+      )}
       <figure
         class="relative overflow-hidden"
         style={{ aspectRatio: `${WIDTH} / ${HEIGHT}` }}
